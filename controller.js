@@ -5,7 +5,7 @@ class Controller {
 
     this.w = canvas.canvasLink.clientWidth;
     this.h = canvas.canvasLink.clientHeight;
-    this.s = 75;
+    this.s = 75; // Square size
     this.scoreLink = document.getElementById("score");
     this.score = 0;
     this.squares = [];
