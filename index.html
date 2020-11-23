@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title> Qualium Systems Javascript test task </title>
+   <style>
+      canvas {
+         background: black;
+      }
+   </style>
+</head>
+<body>
+   <div>  
+      <button onclick="controller.start();"> Start </button>
+      <button onclick="controller.stop();"> Stop </button>
+
+      <span>
+         Score:
+         <span id="score"> 0 </span>
+      </span>
+
+   </div>
+
+   <canvas width="640" height="480" id="canvas"></canvas>
+
+   <script type="text/javascript" src="canvas.js"></script>
+   <script type="text/javascript" src="controller.js"></script>
+</body>
+</html>
