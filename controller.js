@@ -1,9 +1,9 @@
 class Controller {
   constructor(canvas) {
-    this.canvas = canvas.canvas.link;
+    this.canvas = canvas.link;
     this.context = this.canvas.getContext('2d');
-    this.w = canvas.canvas.link.clientWidth;
-    this.h = canvas.canvas.link.clientHeight;
+    this.w = canvas.link.clientWidth;
+    this.h = canvas.link.clientHeight;
     this.size = 75; // Square size
     this.scoreElement = document.getElementById("score");
     this.score = 0;
@@ -24,19 +24,19 @@ class Controller {
     this.squares.push(newSquare);
   }
 
+  randomColor() {
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+    return `rgb(${r},${g},${b})`;
+  }
+
   randomCreation() {
     let randomInterval = Math.random() * 1000;
     this.timeOut = setTimeout(() => {
       this.addSquare();
       this.randomCreation();
     }, randomInterval);
-  }
-
-  randomColor() {
-    const r = Math.floor(Math.random() * 256);
-    const g = Math.floor(Math.random() * 256);
-    const b = Math.floor(Math.random() * 256);
-    return `rgb(${r},${g},${b})`;
   }
 
   renderSquares() {
@@ -52,23 +52,11 @@ class Controller {
     });
   }
 
-  deleteHiddenSquares() {
-    this.squares = this.squares.filter((square) => square.y <= this.h);
-  }
-
   isPointInSquare(square, x, y) {
     return square.x < x &&
       square.x + this.size >= x &&
       square.y + this.size >= y &&
       square.y < y;
-  }
-
-  clear() {
-    this.context.clearRect(0, 0, this.w, this.h);
-  }
-
-  scoreRender() {
-    this.scoreElement.innerHTML = this.score;
   }
 
   click(x, y) {
@@ -80,6 +68,18 @@ class Controller {
         break;
       }
     }
+  }
+
+  clear() {
+    this.context.clearRect(0, 0, this.w, this.h);
+  }
+
+  scoreRender() {
+    this.scoreElement.innerHTML = this.score;
+  }
+
+  deleteHiddenSquares() {
+    this.squares = this.squares.filter((square) => square.y <= this.h);
   }
 
   start() {
@@ -98,6 +98,9 @@ class Controller {
       this.isPlaying = false;
       clearTimeout(this.timeOut);
       this.clear();
+    } else {
+      this.score = 0;
+      this.scoreRender();
     }
   }
 
