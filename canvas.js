@@ -1,6 +1,6 @@
 class Canvas {
    constructor () {
-     this.canvasLink = document.getElementById('canvas');
+     this.link = document.getElementById('canvas');
    }
  }
  

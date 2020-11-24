@@ -1,16 +1,14 @@
 class Controller {
   constructor(canvas) {
-    this.canvas = canvas.canvasLink;
+    this.canvas = canvas.canvas.link;
     this.context = this.canvas.getContext('2d');
-
-    this.w = canvas.canvasLink.clientWidth;
-    this.h = canvas.canvasLink.clientHeight;
-    this.s = 75; // Square size
-    this.scoreLink = document.getElementById("score");
+    this.w = canvas.canvas.link.clientWidth;
+    this.h = canvas.canvas.link.clientHeight;
+    this.size = 75; // Square size
+    this.scoreElement = document.getElementById("score");
     this.score = 0;
     this.squares = [];
     this.isPlaying = false;
-
     this.canvas.addEventListener('click', (e) => {
       this.click(e.offsetX, e.offsetY);
     });
@@ -18,33 +16,33 @@ class Controller {
 
   addSquare() {
     const newSquare = {
-      x: Math.random() * (this.w - this.s),
+      x: Math.random() * (this.w - this.size),
       y: 0,
       color: this.randomColor(),
-      speed: Math.random() * 5 + 1
+      speed: Math.random() * 4 + 1
     };
     this.squares.push(newSquare);
   }
 
-  randomPlace() {
-    let rand = Math.random()*700;
+  randomCreation() {
+    let randomInterval = Math.random() * 1000;
     this.timeOut = setTimeout(() => {
       this.addSquare();
-      this.randomPlace();
-    }, rand);
+      this.randomCreation();
+    }, randomInterval);
   }
 
   randomColor() {
-    const r = Math.floor(Math.random() * 255);
-    const g = Math.floor(Math.random() * 255);
-    const b = Math.floor(Math.random() * 255);
-    return `rgb(${r}, ${g}, ${b})`;
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+    return `rgb(${r},${g},${b})`;
   }
 
   renderSquares() {
     this.squares.forEach((square) => {
       this.context.fillStyle = square.color;
-      this.context.fillRect(square.x, square.y, this.s, this.s);
+      this.context.fillRect(square.x, square.y, this.size, this.size);
     });
   }
 
@@ -60,8 +58,8 @@ class Controller {
 
   isPointInSquare(square, x, y) {
     return square.x < x &&
-      square.x + this.s >= x &&
-      square.y + this.s >= y &&
+      square.x + this.size >= x &&
+      square.y + this.size >= y &&
       square.y < y;
   }
 
@@ -69,13 +67,13 @@ class Controller {
     this.context.clearRect(0, 0, this.w, this.h);
   }
 
-  scoreRender (){
-    this.scoreLink.innerHTML = this.score;
+  scoreRender() {
+    this.scoreElement.innerHTML = this.score;
   }
-  
+
   click(x, y) {
-    for(let i = this.squares.length -1; i>=0; i--) {
-      if(this.isPointInSquare(this.squares[i], x, y)) {
+    for (let i = this.squares.length - 1; i >= 0; i--) {
+      if (this.isPointInSquare(this.squares[i], x, y)) {
         this.squares.splice(i, 1);
         this.score++;
         this.scoreRender();
@@ -87,11 +85,10 @@ class Controller {
   start() {
     if (!this.isPlaying) {
       this.isPlaying = true;
-
       this.score = 0;
       this.scoreRender();
       this.squares = [];
-      this.randomPlace();
+      this.randomCreation();
       this.animate.call(this);
     }
   }
@@ -100,9 +97,8 @@ class Controller {
     if (this.isPlaying) {
       this.isPlaying = false;
       clearTimeout(this.timeOut);
+      this.clear();
     }
-    this.clear();
-
   }
 
   animate() {
